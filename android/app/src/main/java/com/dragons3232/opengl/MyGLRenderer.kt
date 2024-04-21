@@ -1,5 +1,6 @@
 import android.opengl.GLES30
 import android.opengl.GLSurfaceView
+import android.opengl.Matrix
 import com.dragons3232.opengl.Square
 import com.dragons3232.opengl.Triangle
 import javax.microedition.khronos.egl.EGLConfig
@@ -35,13 +36,19 @@ class MyGLRenderer : GLSurfaceView.Renderer {
     var mProgramObject = 0;
     var triangle = Triangle();
     var square = Square();
+    // vPMatrix is an abbreviation for "Model View Projection Matrix"
+    private val vPMatrix = FloatArray(16)
+    private val projectionMatrix = FloatArray(16)
+    private val viewMatrix = FloatArray(16)
+    private var mMVPMatrixHandle = 0
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig) {
         val vShaderStr = ("#version 300 es 			  \n"
                 + "in vec4 vPosition;           \n"
+                + "uniform mat4 uMVPMatrix;     \n"
                 + "void main()                  \n"
                 + "{                            \n"
-                + "   gl_Position = vPosition;  \n"
+                + "   gl_Position = uMVPMatrix * vPosition;  \n"
                 + "}                            \n")
 
         val fShaderStr = ("#version 300 es		 			          	\n"
@@ -85,6 +92,9 @@ class MyGLRenderer : GLSurfaceView.Renderer {
         // Link the program
         GLES30.glLinkProgram(programObject)
 
+        // Get access to projection matrix. Must call after linking program
+        mMVPMatrixHandle = GLES30.glGetUniformLocation(programObject, "uMVPMatrix");
+
         // Check the link status
 
         // Check the link status
@@ -106,6 +116,16 @@ class MyGLRenderer : GLSurfaceView.Renderer {
     override fun onDrawFrame(unused: GL10) {
         // Redraw background color
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT)
+
+        // Set the camera position (View matrix)
+        Matrix.setLookAtM(viewMatrix, 0, 0f, 0f, 3f, 0f, 0f, 0f, 0f, 1.0f, 0.0f)
+
+        // Calculate the projection and view transformation
+        Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0)
+
+        // Pass the projection and view transformation to the shader
+        GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, vPMatrix, 0)
+
         // Use the program object
         GLES30.glUseProgram ( mProgramObject );
 
@@ -115,5 +135,14 @@ class MyGLRenderer : GLSurfaceView.Renderer {
 
     override fun onSurfaceChanged(unused: GL10, width: Int, height: Int) {
         GLES30.glViewport(0, 0, width, height)
+        val ratio = width.toFloat() / height.toFloat()
+        val left = -ratio
+        val right = ratio
+        val bottom = -1.0f
+        val top = 1.0f
+        val near = 1.0f
+        val far = 10.0f
+
+        Matrix.frustumM(projectionMatrix, 0, left, right, bottom, top, near, far)
     }
 }
