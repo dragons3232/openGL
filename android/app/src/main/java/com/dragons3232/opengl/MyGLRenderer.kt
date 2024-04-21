@@ -43,6 +43,7 @@ class MyGLRenderer : GLSurfaceView.Renderer {
     private val viewMatrix = FloatArray(16)
     private var mMVPMatrixHandle = 0
     private val rotationMatrix = FloatArray(16)
+    private val zoomMatrix = FloatArray(16)
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig) {
         val vShaderStr = ("#version 300 es 			  \n"
@@ -124,6 +125,9 @@ class MyGLRenderer : GLSurfaceView.Renderer {
 
         // Calculate the projection and view transformation
         Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0)
+
+        GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, vPMatrix, 0)
+        triangle.draw()
 
         // Create a rotation transformation for the triangle
         val time = SystemClock.uptimeMillis() % 4000L
