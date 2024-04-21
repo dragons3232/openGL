@@ -137,6 +137,7 @@ class MyGLRenderer : GLSurfaceView.Renderer {
         // Combine the rotation matrix with the projection and camera view
         // Note that the vPMatrix factor *must be first* in order
         // for the matrix multiplication product to be correct.
+        Matrix.multiplyMM(vPMatrix, 0, vPMatrix, 0, viewMatrix, 0)
         Matrix.multiplyMM(vPMatrix, 0, vPMatrix, 0, rotationMatrix, 0)
 
         // Pass the projection and view transformation to the shader
