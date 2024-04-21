@@ -1,5 +1,6 @@
 import android.opengl.GLES30
 import android.opengl.GLSurfaceView
+import com.dragons3232.opengl.Square
 import com.dragons3232.opengl.Triangle
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -33,6 +34,7 @@ fun loadShader(type: Int, shaderSrc: String): Int {
 class MyGLRenderer : GLSurfaceView.Renderer {
     var mProgramObject = 0;
     var triangle = Triangle();
+    var square = Square();
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig) {
         val vShaderStr = ("#version 300 es 			  \n"
@@ -107,7 +109,8 @@ class MyGLRenderer : GLSurfaceView.Renderer {
         // Use the program object
         GLES30.glUseProgram ( mProgramObject );
 
-        triangle.draw()
+//        triangle.draw()
+        square.draw()
     }
 
     override fun onSurfaceChanged(unused: GL10, width: Int, height: Int) {
