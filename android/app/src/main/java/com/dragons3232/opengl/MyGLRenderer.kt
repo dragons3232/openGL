@@ -42,6 +42,8 @@ class MyGLRenderer : GLSurfaceView.Renderer {
     private val projectionMatrix = FloatArray(16)
     private val viewMatrix = FloatArray(16)
     private var mMVPMatrixHandle = 0
+    private var mColorHandle = 0
+
     private val rotationMatrix = FloatArray(16)
     private val zoomMatrix = FloatArray(16)
 
@@ -56,10 +58,11 @@ class MyGLRenderer : GLSurfaceView.Renderer {
 
         val fShaderStr = ("#version 300 es		 			          	\n"
                 + "precision mediump float;					  	\n"
+                + "uniform vec4 u_Color; \n"
                 + "out vec4 fragColor;	 			 		  	\n"
                 + "void main()                                  \n"
                 + "{                                            \n"
-                + "  fragColor = vec4 ( 1.0, 0.0, 0.0, 1.0 );	\n"
+                + "  fragColor = u_Color;	\n"
                 + "}                                            \n")
 
         val vertexShader: Int
@@ -97,6 +100,7 @@ class MyGLRenderer : GLSurfaceView.Renderer {
 
         // Get access to projection matrix. Must call after linking program
         mMVPMatrixHandle = GLES30.glGetUniformLocation(programObject, "uMVPMatrix");
+        mColorHandle = GLES30.glGetUniformLocation(programObject, "u_Color");
 
         // Check the link status
 
@@ -127,7 +131,7 @@ class MyGLRenderer : GLSurfaceView.Renderer {
         Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0)
 
         GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, vPMatrix, 0)
-        triangle.draw()
+//        triangle.draw()
 
         // Create a rotation transformation for the triangle
         val time = SystemClock.uptimeMillis() % 4000L
@@ -140,12 +144,15 @@ class MyGLRenderer : GLSurfaceView.Renderer {
         Matrix.multiplyMM(vPMatrix, 0, vPMatrix, 0, viewMatrix, 0)
         Matrix.multiplyMM(vPMatrix, 0, vPMatrix, 0, rotationMatrix, 0)
 
+        // Use the program object
+        GLES30.glUseProgram(mProgramObject);
+        GLES30.glUniform4f(mColorHandle, 1f, 1f, 0f, 1f)
+        triangle.draw()
+
         // Pass the projection and view transformation to the shader
         GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, vPMatrix, 0)
 
-        // Use the program object
-        GLES30.glUseProgram ( mProgramObject );
-
+        GLES30.glUniform4f(mColorHandle, 1.0f, 0.0f, 1.0f, 1.0f);
 //        triangle.draw()
         square.draw()
     }
