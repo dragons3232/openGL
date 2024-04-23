@@ -14,7 +14,8 @@ class Triangle {
     private val vertices = floatArrayOf( // Vertices of the triangle
         0.0f, 1.0f, 0.0f,  // 0. top
         -1.0f, -1.0f, 0.0f,  // 1. left-bottom
-        1.0f, -1.0f, 0.0f // 2. right-bottom
+        1.0f, -1.0f, 0.0f, // 2. right-bottom
+        0.0f, 1.0f, 0.0f,  // 0. top
     )
     private val indices = byteArrayOf(0, 1, 2) // Indices to above vertices (in CCW)
 
@@ -39,6 +40,6 @@ class Triangle {
         GLES30.glVertexAttribPointer(0, 3, GLES30.GL_FLOAT, false, 0, vertexBuffer);
         GLES30.glEnableVertexAttribArray(0);
 
-        GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, 3);
+        GLES30.glDrawArrays(GLES30.GL_LINE_STRIP, 0, vertices.size / 3);
     }
 }
