@@ -124,14 +124,17 @@ class MyGLRenderer : GLSurfaceView.Renderer {
         // Redraw background color
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT)
 
+        // Use the program object
+        GLES30.glUseProgram(mProgramObject);
+
         // Set the camera position (View matrix)
         Matrix.setLookAtM(viewMatrix, 0, 0f, 0f, 3f, 0f, 0f, 0f, 0f, 1.0f, 0.0f)
-
         // Calculate the projection and view transformation
         Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0)
-
         GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, vPMatrix, 0)
-//        triangle.draw()
+
+        GLES30.glUniform4f(mColorHandle, 1f, 1f, 0f, 1f)
+        triangle.draw()
 
         // Create a rotation transformation for the triangle
         val time = SystemClock.uptimeMillis() % 4000L
@@ -143,12 +146,6 @@ class MyGLRenderer : GLSurfaceView.Renderer {
         // for the matrix multiplication product to be correct.
         Matrix.multiplyMM(vPMatrix, 0, vPMatrix, 0, viewMatrix, 0)
         Matrix.multiplyMM(vPMatrix, 0, vPMatrix, 0, rotationMatrix, 0)
-
-        // Use the program object
-        GLES30.glUseProgram(mProgramObject);
-        GLES30.glUniform4f(mColorHandle, 1f, 1f, 0f, 1f)
-        triangle.draw()
-
         // Pass the projection and view transformation to the shader
         GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, vPMatrix, 0)
 
