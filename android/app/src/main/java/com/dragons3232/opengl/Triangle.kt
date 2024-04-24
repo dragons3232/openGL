@@ -61,6 +61,7 @@ class Triangle {
         GLES30.glDrawElements(GLES30.GL_LINE_STRIP, indices.size, GLES30.GL_UNSIGNED_BYTE, 0)
 
         Matrix.translateM(vPMatrix, 0, 0.5f, 0f, 0f)
+        Matrix.scaleM(vPMatrix, 0, 1.2f, 1.2f, 1f)
         GLES30.glUniformMatrix4fv(mvpMatrix, 1, false, vPMatrix, 0)
 
         // reuse same index buffer to draw filled triangle
