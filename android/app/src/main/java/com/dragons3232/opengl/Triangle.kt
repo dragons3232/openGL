@@ -1,6 +1,7 @@
 package com.dragons3232.opengl
 
 import android.opengl.GLES30
+import android.opengl.Matrix
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -51,13 +52,16 @@ class Triangle {
     }
 
     // Render this shape
-    fun draw() {
+    fun draw(mvpMatrix: Int, vPMatrix: FloatArray) {
         // Load the vertex data
         GLES30.glVertexAttribPointer(0, 3, GLES30.GL_FLOAT, false, 0, vertexBuffer);
         GLES30.glEnableVertexAttribArray(0);
 
         GLES30.glBindBuffer(GLES30.GL_ELEMENT_ARRAY_BUFFER, indexBufferId)
         GLES30.glDrawElements(GLES30.GL_LINE_STRIP, indices.size, GLES30.GL_UNSIGNED_BYTE, 0)
+
+        Matrix.translateM(vPMatrix, 0, 0.5f, 0f, 0f)
+        GLES30.glUniformMatrix4fv(mvpMatrix, 1, false, vPMatrix, 0)
 
         // reuse same index buffer to draw filled triangle
         GLES30.glDrawElements(GLES30.GL_TRIANGLES, indices.size - 1, GLES30.GL_UNSIGNED_BYTE, 0)

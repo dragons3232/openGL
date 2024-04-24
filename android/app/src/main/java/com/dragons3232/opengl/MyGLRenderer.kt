@@ -37,6 +37,7 @@ class MyGLRenderer : GLSurfaceView.Renderer {
     var mProgramObject = 0;
     var triangle = Triangle();
     var square = Square();
+
     // vPMatrix is an abbreviation for "Model View Projection Matrix"
     private val vPMatrix = FloatArray(16)
     private val projectionMatrix = FloatArray(16)
@@ -136,7 +137,7 @@ class MyGLRenderer : GLSurfaceView.Renderer {
         GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, vPMatrix, 0)
 
         GLES30.glUniform4f(mColorHandle, 1f, 1f, 0f, 1f)
-        triangle.draw()
+        triangle.draw(mMVPMatrixHandle, vPMatrix)
 
         // Create a rotation transformation for the triangle
         val time = SystemClock.uptimeMillis() % 4000L
