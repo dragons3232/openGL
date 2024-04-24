@@ -118,6 +118,8 @@ class MyGLRenderer : GLSurfaceView.Renderer {
         mProgramObject = programObject
         // Set the background frame color
         GLES30.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
+
+        triangle.bindBuffers()
     }
 
     override fun onDrawFrame(unused: GL10) {
