@@ -62,6 +62,7 @@ class Triangle {
 
         Matrix.translateM(vPMatrix, 0, 0.5f, 0f, 0f)
         Matrix.scaleM(vPMatrix, 0, 1.2f, 1.2f, 1f)
+        Matrix.rotateM(vPMatrix, 0, 30f, 0f, -1f, -1f)
         GLES30.glUniformMatrix4fv(mvpMatrix, 1, false, vPMatrix, 0)
 
         // reuse same index buffer to draw filled triangle
