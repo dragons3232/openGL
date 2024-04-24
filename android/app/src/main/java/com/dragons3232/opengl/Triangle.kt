@@ -58,6 +58,9 @@ class Triangle {
 
         GLES30.glBindBuffer(GLES30.GL_ELEMENT_ARRAY_BUFFER, indexBufferId)
         GLES30.glDrawElements(GLES30.GL_LINE_STRIP, indices.size, GLES30.GL_UNSIGNED_BYTE, 0)
+
+        // reuse same index buffer to draw filled triangle
+        GLES30.glDrawElements(GLES30.GL_TRIANGLES, indices.size - 1, GLES30.GL_UNSIGNED_BYTE, 0)
         GLES30.glBindBuffer(GLES30.GL_ELEMENT_ARRAY_BUFFER, 0)
     }
 }
