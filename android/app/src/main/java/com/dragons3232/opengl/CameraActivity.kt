@@ -4,7 +4,6 @@ package com.dragons3232.opengl
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
@@ -13,7 +12,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -67,6 +65,11 @@ class CameraActivity : AppCompatActivity() {
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
             imageAnalysis.setAnalyzer(getExecutor(), ImageAnalysis.Analyzer { imageProxy ->
+                val bitmap = viewBinding.viewFinder.bitmap;
+                if (bitmap != null) {
+                    val clone: Bitmap = bitmap.copy(bitmap.getConfig(), true)
+                    Log.w(TAG, "bitmap frame size " + clone.width + ":" + clone.height)
+                }
                 // after done, release the ImageProxy object
                 imageProxy.close()
             })
