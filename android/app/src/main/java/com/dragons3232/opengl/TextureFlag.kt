@@ -13,6 +13,7 @@ import javax.microedition.khronos.opengles.GL10
 
 class TextureFlag() {
     private var mProgramObject = 0;
+    private var mMVPMatrixHandle = 0;
 
     private val textureVertices = floatArrayOf(
         0f, 1f,
@@ -94,6 +95,7 @@ class TextureFlag() {
 
         // Get access to projection matrix. Must call after linking program
         textureHandle = GLES30.glGetUniformLocation(programObject, "uTexture")
+        mMVPMatrixHandle = GLES30.glGetUniformLocation(programObject, "uMVPMatrix");
 
         // Check the link status
         GLES30.glGetProgramiv(programObject, GLES30.GL_LINK_STATUS, linked, 0)
@@ -119,9 +121,11 @@ class TextureFlag() {
         loadTexture(unused)
     }
 
-    fun draw() {
+    fun draw(vPMatrix: FloatArray) {
         // Use the program object
         GLES30.glUseProgram(mProgramObject);
+
+        GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, vPMatrix, 0)
 
         GLES30.glVertexAttribPointer(textureIDs[0], 2, GLES30.GL_FLOAT, false, 0, textureBuffer);
         GLES30.glEnableVertexAttribArray(textureIDs[0]);

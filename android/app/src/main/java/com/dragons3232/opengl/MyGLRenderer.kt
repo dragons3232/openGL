@@ -146,7 +146,7 @@ class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
         Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0)
         GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, vPMatrix, 0)
 
-        flag?.draw()
+        flag?.draw(vPMatrix)
         square.draw()
 
         GLES30.glUniform4f(mColorHandle, 1f, 1f, 0f, 1f)
