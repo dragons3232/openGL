@@ -26,6 +26,7 @@ class TextureFlag() {
 
     private val textureIDs = IntArray(1)
     private var bitmap: Bitmap? = null
+    private var square = Square();
 
     fun loadTexture(gl: GL10) {
         gl.glGenTextures(1, textureIDs, 0) // Generate texture-ID array for numFaces IDs
@@ -131,5 +132,7 @@ class TextureFlag() {
         GLES30.glEnableVertexAttribArray(textureIDs[0]);
 
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureIDs[0]);
+        square.draw()
+        GLES30.glDisableVertexAttribArray(textureIDs[0]);
     }
 }
