@@ -1,3 +1,4 @@
+import android.content.Context
 import android.opengl.GLES30
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
@@ -33,7 +34,7 @@ fun loadShader(type: Int, shaderSrc: String): Int {
 }
 
 
-class MyGLRenderer : GLSurfaceView.Renderer {
+class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
     var mProgramObject = 0;
     var triangle = Triangle();
     var square = Square();
@@ -47,6 +48,11 @@ class MyGLRenderer : GLSurfaceView.Renderer {
 
     private val rotationMatrix = FloatArray(16)
     private val zoomMatrix = FloatArray(16)
+
+    private var context: Context?
+    init {
+        this.context = context
+    }
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig) {
         val vShaderStr = ("#version 300 es 			  \n"
