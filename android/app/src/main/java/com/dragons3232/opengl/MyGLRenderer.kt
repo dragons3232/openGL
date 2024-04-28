@@ -4,6 +4,7 @@ import android.opengl.GLSurfaceView
 import android.opengl.Matrix
 import android.os.SystemClock
 import com.dragons3232.opengl.Square
+import com.dragons3232.opengl.TextureFlag
 import com.dragons3232.opengl.Triangle
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -38,6 +39,7 @@ class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
     var mProgramObject = 0;
     var triangle = Triangle();
     var square = Square();
+    var flag: TextureFlag? = null;
 
     // vPMatrix is an abbreviation for "Model View Projection Matrix"
     private val vPMatrix = FloatArray(16)
@@ -126,6 +128,8 @@ class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
         // Set the background frame color
         GLES30.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
 
+        flag = TextureFlag()
+        flag?.prepare(context, unused)
         triangle.bindBuffers()
     }
 
@@ -141,6 +145,9 @@ class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
         // Calculate the projection and view transformation
         Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0)
         GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, vPMatrix, 0)
+
+        flag?.draw()
+        square.draw()
 
         GLES30.glUniform4f(mColorHandle, 1f, 1f, 0f, 1f)
         triangle.draw(mMVPMatrixHandle, vPMatrix)
