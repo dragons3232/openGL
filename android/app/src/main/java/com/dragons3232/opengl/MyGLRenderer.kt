@@ -147,7 +147,6 @@ class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
         GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, vPMatrix, 0)
 
         flag?.draw(vPMatrix)
-        square.draw()
 
         GLES30.glUniform4f(mColorHandle, 1f, 1f, 0f, 1f)
         triangle.draw(mMVPMatrixHandle, vPMatrix)
