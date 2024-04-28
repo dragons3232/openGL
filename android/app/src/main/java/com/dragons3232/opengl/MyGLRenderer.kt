@@ -1,4 +1,5 @@
 import android.content.Context
+import android.graphics.Bitmap
 import android.opengl.GLES30
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
@@ -55,6 +56,9 @@ class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
 
     init {
         this.context = context
+    }
+
+    fun onCamera(bitmap: Bitmap) {
     }
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig) {

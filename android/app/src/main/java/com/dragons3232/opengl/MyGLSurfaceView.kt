@@ -1,4 +1,5 @@
 import android.content.Context
+import android.graphics.Bitmap
 import android.opengl.GLSurfaceView
 
 internal class MyGLSurfaceView(context: Context?) : GLSurfaceView(context) {
@@ -12,5 +13,9 @@ internal class MyGLSurfaceView(context: Context?) : GLSurfaceView(context) {
 
         // Set the Renderer for drawing on the GLSurfaceView
         setRenderer(renderer)
+    }
+
+    fun consumeCamera(bitmap: Bitmap) {
+        renderer?.onCamera(bitmap)
     }
 }

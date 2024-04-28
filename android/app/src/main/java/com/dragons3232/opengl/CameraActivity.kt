@@ -25,13 +25,15 @@ import java.util.concurrent.Executors
 class CameraActivity : AppCompatActivity() {
     private lateinit var viewBinding: CameraActivityBinding
     private lateinit var cameraExecutor: ExecutorService
+    private var glView: MyGLSurfaceView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = CameraActivityBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        viewBinding.glContainer.addView(MyGLSurfaceView(this))
+        glView = MyGLSurfaceView(this)
+        viewBinding.glContainer.addView(glView)
 
         // Request camera permissions
         if (allPermissionsGranted()) {
@@ -72,6 +74,7 @@ class CameraActivity : AppCompatActivity() {
                 if (bitmap != null) {
                     val clone: Bitmap = bitmap.copy(bitmap.getConfig(), true)
                     Log.w(TAG, "bitmap frame size " + clone.width + ":" + clone.height)
+                    glView?.consumeCamera(bitmap)
                 }
                 // after done, release the ImageProxy object
                 imageProxy.close()
