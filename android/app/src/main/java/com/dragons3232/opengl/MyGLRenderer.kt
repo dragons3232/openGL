@@ -52,6 +52,7 @@ class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
     private val zoomMatrix = FloatArray(16)
 
     private var context: Context?
+
     init {
         this.context = context
     }
@@ -172,6 +173,7 @@ class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
     override fun onSurfaceChanged(unused: GL10, width: Int, height: Int) {
         GLES30.glViewport(0, 0, width, height)
         val ratio = width.toFloat() / height.toFloat()
+        val rratio = 1 / ratio
         val left = -ratio
         val right = ratio
         val bottom = -1.0f
@@ -179,6 +181,9 @@ class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
         val near = 1.0f
         val far = 10.0f
 
-        Matrix.frustumM(projectionMatrix, 0, left, right, bottom, top, near, far)
+        if (ratio >= 1.0f)
+            Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1f, 1f, 1f, 10.0f); //Landscape
+        else
+            Matrix.frustumM(projectionMatrix, 0, -1f, 1f, -rratio, rratio, 1f, 10.0f); //Portrait
     }
 }
