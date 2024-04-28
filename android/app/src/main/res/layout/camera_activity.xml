@@ -9,7 +9,15 @@
 
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/glContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

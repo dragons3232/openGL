@@ -1,6 +1,7 @@
 package com.dragons3232.opengl
 
 
+import MyGLSurfaceView
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -29,6 +30,8 @@ class CameraActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = CameraActivityBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
+
+        viewBinding.glContainer.addView(MyGLSurfaceView(this))
 
         // Request camera permissions
         if (allPermissionsGranted()) {
