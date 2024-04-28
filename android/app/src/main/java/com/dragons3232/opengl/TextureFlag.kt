@@ -28,6 +28,9 @@ class TextureFlag() {
     private var bitmap: Bitmap? = null
     private var square = Square();
 
+    private var gl10: GL10? = null;
+    private var updated = false;
+
     fun loadTexture(gl: GL10) {
         gl.glGenTextures(1, textureIDs, 0) // Generate texture-ID array for numFaces IDs
 
@@ -47,6 +50,7 @@ class TextureFlag() {
     }
 
     fun prepare(context: Context?, unused: GL10) {
+        gl10 = unused
         val vShaderStr = ("#version 300 es 			  \n"
                 + "in vec4 vPosition;           \n"
                 + "uniform mat4 uMVPMatrix;     \n"
@@ -122,17 +126,28 @@ class TextureFlag() {
         loadTexture(unused)
     }
 
+    fun updateTexture(bitmap: Bitmap) {
+        this.bitmap = bitmap;
+        updated = true;
+    }
+
     fun draw(vPMatrix: FloatArray) {
         // Use the program object
         GLES30.glUseProgram(mProgramObject);
 
         GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, vPMatrix, 0)
 
-        GLES30.glVertexAttribPointer(textureIDs[0], 2, GLES30.GL_FLOAT, false, 0, textureBuffer);
-        GLES30.glEnableVertexAttribArray(textureIDs[0]);
+        if (updated) {
+            this.gl10?.glDeleteTextures(textureIDs.size, textureIDs, 0);
+            loadTexture(this.gl10!!)
+            updated = false;
+        } else {
+            GLES30.glVertexAttribPointer(textureIDs[0], 2, GLES30.GL_FLOAT, false, 0, textureBuffer)
+            GLES30.glEnableVertexAttribArray(textureIDs[0]);
 
-        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureIDs[0]);
-        square.draw()
-        GLES30.glDisableVertexAttribArray(textureIDs[0]);
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureIDs[0]);
+            square.draw()
+            GLES30.glDisableVertexAttribArray(textureIDs[0]);
+        }
     }
 }
