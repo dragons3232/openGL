@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -70,10 +71,9 @@ class CameraActivity : AppCompatActivity() {
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
             imageAnalysis.setAnalyzer(getExecutor(), ImageAnalysis.Analyzer { imageProxy ->
-                val bitmap = viewBinding.viewFinder.bitmap;
+                val bitmap = toBitmap(imageProxy)
                 if (bitmap != null) {
-                    val clone: Bitmap = bitmap.copy(bitmap.getConfig(), true)
-                    Log.w(TAG, "bitmap frame size " + clone.width + ":" + clone.height)
+                    Log.w(TAG, "bitmap frame size " + bitmap.width + ":" + bitmap.height)
                     glView?.consumeCamera(bitmap)
                 }
                 // after done, release the ImageProxy object
@@ -97,6 +97,20 @@ class CameraActivity : AppCompatActivity() {
             }
 
         }, ContextCompat.getMainExecutor(this))
+    }
+
+    private fun toBitmap(image: ImageProxy): Bitmap? {
+        val planes = image.planes
+        val buffer = planes[0].buffer
+        val pixelStride = planes[0].pixelStride
+        val rowStride = planes[0].rowStride
+        val rowPadding = rowStride - pixelStride * image.width
+        val bitmap = Bitmap.createBitmap(
+            image.width + rowPadding / pixelStride,
+            image.height, Bitmap.Config.ARGB_8888
+        )
+        bitmap.copyPixelsFromBuffer(buffer)
+        return bitmap
     }
 
     private fun requestPermissions() {
