@@ -5,6 +5,7 @@ import MyGLSurfaceView
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
@@ -110,6 +111,9 @@ class CameraActivity : AppCompatActivity() {
             image.height, Bitmap.Config.ARGB_8888
         )
         bitmap.copyPixelsFromBuffer(buffer)
+        val matrix = Matrix()
+        matrix.postRotate(image.imageInfo.rotationDegrees.toFloat())
+        return  Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
         return bitmap
     }
 
