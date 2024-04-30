@@ -155,7 +155,7 @@ class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
         flag?.draw(vPMatrix)
 
         GLES30.glUniform4f(mColorHandle, 1f, 1f, 0f, 1f)
-        triangle.draw(mMVPMatrixHandle, vPMatrix)
+//        triangle.draw(mMVPMatrixHandle, vPMatrix)
 
         // Create a rotation transformation for the triangle
         val time = SystemClock.uptimeMillis() % 4000L
@@ -172,7 +172,7 @@ class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
 
         GLES30.glUniform4f(mColorHandle, 1.0f, 0.0f, 1.0f, 1.0f);
 //        triangle.draw()
-        square.draw()
+//        square.draw()
     }
 
     override fun onSurfaceChanged(unused: GL10, width: Int, height: Int) {
