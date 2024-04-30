@@ -59,7 +59,7 @@ class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
     }
 
     fun onCamera(bitmap: Bitmap) {
-        flag?.updateTexture(bitmap)
+//        flag?.updateTexture(bitmap)
     }
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig) {

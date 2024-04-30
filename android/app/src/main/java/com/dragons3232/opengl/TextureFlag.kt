@@ -29,7 +29,6 @@ class TextureFlag() {
     private var square = Square();
 
     private var gl10: GL10? = null;
-    private var updated = false;
 
     fun loadTexture(gl: GL10) {
         gl.glGenTextures(1, textureIDs, 0) // Generate texture-ID array for numFaces IDs
@@ -126,22 +125,12 @@ class TextureFlag() {
         loadTexture(unused)
     }
 
-    fun updateTexture(bitmap: Bitmap) {
-        this.bitmap = bitmap;
-        updated = true;
-    }
-
     fun draw(vPMatrix: FloatArray) {
         // Use the program object
         GLES30.glUseProgram(mProgramObject);
 
         GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, vPMatrix, 0)
 
-        if (updated) {
-            this.gl10?.glDeleteTextures(textureIDs.size, textureIDs, 0);
-            loadTexture(this.gl10!!)
-            updated = false;
-        }
         GLES30.glVertexAttribPointer(textureIDs[0], 2, GLES30.GL_FLOAT, false, 0, textureBuffer)
         GLES30.glEnableVertexAttribArray(textureIDs[0]);
 
