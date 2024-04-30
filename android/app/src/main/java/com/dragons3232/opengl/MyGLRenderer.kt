@@ -147,7 +147,7 @@ class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
         GLES30.glUseProgram(mProgramObject);
 
         // Set the camera position (View matrix)
-        Matrix.setLookAtM(viewMatrix, 0, 0f, 0f, 3f, 0f, 0f, 0f, 0f, 1.0f, 0.0f)
+        Matrix.setLookAtM(viewMatrix, 0, 0f, 0f, 0.1f, 0f, 0f, 0f, 0f, 1.0f, 0.0f)
         // Calculate the projection and view transformation
         Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0)
         GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, vPMatrix, 0)
@@ -167,8 +167,8 @@ class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
         val far = 10.0f
 
         if (ratio >= 1.0f)
-            Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1f, 1f, 1f, 10.0f); //Landscape
+            Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1f, 1f, 0.1f, 10.0f); //Landscape
         else
-            Matrix.frustumM(projectionMatrix, 0, -1f, 1f, -rratio, rratio, 1f, 10.0f); //Portrait
+            Matrix.frustumM(projectionMatrix, 0, -1f, 1f, -rratio, rratio, 0.1f, 10.0f); //Portrait
     }
 }
