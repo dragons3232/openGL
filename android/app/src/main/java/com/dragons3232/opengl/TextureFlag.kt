@@ -141,13 +141,12 @@ class TextureFlag() {
             this.gl10?.glDeleteTextures(textureIDs.size, textureIDs, 0);
             loadTexture(this.gl10!!)
             updated = false;
-        } else {
-            GLES30.glVertexAttribPointer(textureIDs[0], 2, GLES30.GL_FLOAT, false, 0, textureBuffer)
-            GLES30.glEnableVertexAttribArray(textureIDs[0]);
-
-            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureIDs[0]);
-            square.draw()
-            GLES30.glDisableVertexAttribArray(textureIDs[0]);
         }
+        GLES30.glVertexAttribPointer(textureIDs[0], 2, GLES30.GL_FLOAT, false, 0, textureBuffer)
+        GLES30.glEnableVertexAttribArray(textureIDs[0]);
+
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, textureIDs[0]);
+        square.draw()
+        GLES30.glDisableVertexAttribArray(textureIDs[0]);
     }
 }
