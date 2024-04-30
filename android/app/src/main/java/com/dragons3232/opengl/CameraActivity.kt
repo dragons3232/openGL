@@ -113,7 +113,7 @@ class CameraActivity : AppCompatActivity() {
         bitmap.copyPixelsFromBuffer(buffer)
         val matrix = Matrix()
         matrix.postRotate(image.imageInfo.rotationDegrees.toFloat())
-        return  Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
         return bitmap
     }
 

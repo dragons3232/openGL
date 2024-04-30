@@ -131,6 +131,10 @@ class CameraTexture() {
         updated = true;
     }
 
+    fun updateRatio(ratio: Float) {
+        square?.updateRatio(ratio)
+    }
+
     fun draw(vPMatrix: FloatArray) {
         // Use the program object
         GLES30.glUseProgram(mProgramObject);

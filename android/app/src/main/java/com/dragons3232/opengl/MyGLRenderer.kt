@@ -1,4 +1,3 @@
-
 import android.content.Context
 import android.graphics.Bitmap
 import android.opengl.GLES30
@@ -170,5 +169,6 @@ class MyGLRenderer(context: Context?) : GLSurfaceView.Renderer {
             Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1f, 1f, 0.1f, 10.0f); //Landscape
         else
             Matrix.frustumM(projectionMatrix, 0, -1f, 1f, -rratio, rratio, 0.1f, 10.0f); //Portrait
+        camTexture?.updateRatio(ratio)
     }
 }

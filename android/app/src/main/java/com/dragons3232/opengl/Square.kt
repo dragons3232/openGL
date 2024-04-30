@@ -9,7 +9,7 @@ import java.nio.FloatBuffer
 * A square drawn in 2 triangles (using TRIANGLE_STRIP).
 */
 class Square {
-    private val vertexBuffer: FloatBuffer // Buffer for vertex-array
+    private var vertexBuffer: FloatBuffer // Buffer for vertex-array
     private val vertices = floatArrayOf( // Vertices for the square
         -1.0f, -1.0f, 0.0f,  // 0. left-bottom
         1.0f, -1.0f, 0.0f,  // 1. right-bottom
@@ -20,6 +20,17 @@ class Square {
     // Constructor - Setup the vertex buffer
     init {
         // Setup vertex array buffer. Vertices in float. A float has 4 bytes
+        val vbb = ByteBuffer.allocateDirect(vertices.size * 4)
+        vbb.order(ByteOrder.nativeOrder()) // Use native byte order
+        vertexBuffer = vbb.asFloatBuffer() // Convert from byte to float
+        vertexBuffer.put(vertices) // Copy data into buffer
+        vertexBuffer.position(0) // Rewind
+    }
+
+    fun updateRatio(ratio: Float) {
+        for (i in 0..3) {
+            vertices[i * 3 + 1] /= ratio
+        }
         val vbb = ByteBuffer.allocateDirect(vertices.size * 4)
         vbb.order(ByteOrder.nativeOrder()) // Use native byte order
         vertexBuffer = vbb.asFloatBuffer() // Convert from byte to float
