@@ -68,7 +68,7 @@ class CameraActivity : AppCompatActivity() {
             val imageAnalysis = ImageAnalysis.Builder()
                 // enable the following line if RGBA output is needed.
                 .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
-                .setTargetResolution(Size(1280, 720))
+                .setTargetResolution(Size(720, 1280))
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
             imageAnalysis.setAnalyzer(getExecutor(), ImageAnalysis.Analyzer { imageProxy ->
