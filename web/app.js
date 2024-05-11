@@ -49,6 +49,7 @@ function main() {
 
   // look up where the vertex data needs to go.
   var positionAttributeLocation = gl.getAttribLocation(program, "a_position");
+  var colorUniformLocation = gl.getUniformLocation(program, "u_color");
 
   // Create a buffer and put three 2d clip space points in it
   var positionBuffer = gl.createBuffer();
@@ -95,6 +96,9 @@ function main() {
   var offset = 0;        // start at the beginning of the buffer
   gl.vertexAttribPointer(
       positionAttributeLocation, size, type, normalize, stride, offset);
+
+  // Set a random color.
+  gl.uniform4f(colorUniformLocation, Math.random(), Math.random(), Math.random(), 1);
 
   // draw
   var primitiveType = gl.TRIANGLES;
