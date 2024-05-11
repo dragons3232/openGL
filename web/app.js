@@ -49,7 +49,7 @@ function main() {
 
   // look up where the vertex data needs to go.
   var positionAttributeLocation = gl.getAttribLocation(program, "a_position");
-  var colorUniformLocation = gl.getUniformLocation(program, "u_color");
+  var colorAttrLocation = gl.getAttribLocation(program, "vColor");
 
   // Create a buffer and put three 2d clip space points in it
   var positionBuffer = gl.createBuffer();
@@ -82,6 +82,30 @@ function main() {
   // Tell it to use our program (pair of shaders)
   gl.useProgram(program);
 
+  // Create a buffer for the colors.
+  var colorBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([
+      Math.random(), Math.random(), Math.random(), 1,
+      Math.random(), Math.random(), Math.random(), 1,
+      Math.random(), Math.random(), Math.random(), 1,
+      Math.random(), Math.random(), Math.random(), 1,
+      Math.random(), Math.random(), Math.random(), 1,
+      Math.random(), Math.random(), Math.random(), 1,
+    ]),
+    gl.STATIC_DRAW);
+
+  gl.enableVertexAttribArray(colorAttrLocation);
+
+  // Bind the color buffer.
+  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+
+  // Tell the color attribute how to get data out of colorBuffer (ARRAY_BUFFER)
+  gl.vertexAttribPointer(colorAttrLocation, 4, gl.FLOAT, false, 0, 0)
+
   // Turn on the attribute
   gl.enableVertexAttribArray(positionAttributeLocation);
 
@@ -95,10 +119,7 @@ function main() {
   var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
   var offset = 0;        // start at the beginning of the buffer
   gl.vertexAttribPointer(
-      positionAttributeLocation, size, type, normalize, stride, offset);
-
-  // Set a random color.
-  gl.uniform4f(colorUniformLocation, Math.random(), Math.random(), Math.random(), 1);
+    positionAttributeLocation, size, type, normalize, stride, offset);
 
   // draw
   var primitiveType = gl.TRIANGLES;
