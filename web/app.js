@@ -60,6 +60,7 @@ function main() {
     0, 0,
     0, 0.5,
     0.5, 0.5,
+    0.5, 0.5,
     0.5, 0,
     0, 0,
   ];
@@ -96,9 +97,9 @@ function main() {
       positionAttributeLocation, size, type, normalize, stride, offset);
 
   // draw
-  var primitiveType = gl.TRIANGLE_STRIP;
+  var primitiveType = gl.TRIANGLES;
   var offset = 0;
-  var count = 5;
+  var count = 6;
   gl.drawArrays(primitiveType, offset, count);
 }
 
