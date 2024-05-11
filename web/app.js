@@ -59,7 +59,9 @@ function main() {
   var positions = [
     0, 0,
     0, 0.5,
-    0.7, 0,
+    0.5, 0.5,
+    0.5, 0,
+    0, 0,
   ];
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
@@ -94,9 +96,9 @@ function main() {
       positionAttributeLocation, size, type, normalize, stride, offset);
 
   // draw
-  var primitiveType = gl.TRIANGLES;
+  var primitiveType = gl.TRIANGLE_STRIP;
   var offset = 0;
-  var count = 3;
+  var count = 5;
   gl.drawArrays(primitiveType, offset, count);
 }
 
