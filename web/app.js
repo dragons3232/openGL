@@ -61,9 +61,9 @@ function main() {
     0, 0,
     0, 0.5,
     0.5, 0.5,
-    0.5, 0.5,
+    // 0.5, 0.5,
     0.5, 0,
-    0, 0,
+    // 0, 0,
   ];
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
@@ -112,6 +112,23 @@ function main() {
   // Bind the position buffer.
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
+  // create index buffer
+  const indexBuffer = gl.createBuffer();
+
+  // make this buffer the current 'ELEMENT_ARRAY_BUFFER'
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+
+  // Fill the current element array buffer with data
+  const indices = [
+    0, 1, 2,   // first triangle
+    2, 3, 0,   // second triangle
+  ];
+  gl.bufferData(
+    gl.ELEMENT_ARRAY_BUFFER,
+    new Uint16Array(indices),
+    gl.STATIC_DRAW
+  );
+
   // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
   var size = 2;          // 2 components per iteration
   var type = gl.FLOAT;   // the data is 32bit floats
@@ -121,11 +138,16 @@ function main() {
   gl.vertexAttribPointer(
     positionAttributeLocation, size, type, normalize, stride, offset);
 
+  // bind the buffer containing the indices
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+
   // draw
   var primitiveType = gl.TRIANGLES;
   var offset = 0;
   var count = 6;
-  gl.drawArrays(primitiveType, offset, count);
+  // gl.drawArrays(primitiveType, offset, count);
+  var indexType = gl.UNSIGNED_SHORT;
+  gl.drawElements(primitiveType, count, indexType, offset);
 }
 
 main();
