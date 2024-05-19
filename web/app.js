@@ -132,9 +132,9 @@ function main() {
   );
 
   // Compute the matrix
-  var matrix = m4.perspective(1, 1, -1, 1);
+  var matrix = m4.orthographic(-1, 1, -1, 1, -10, 10);
   matrix = m4.translate(matrix, 0.2, 0.3, -8);
-  matrix = m4.xRotate(matrix, 20);
+  matrix = m4.zRotate(matrix, 20);
   matrix = m4.scale(matrix, 2, 2, 2);
   // Set the matrix.
   gl.uniformMatrix4fv(matrixLocation, false, matrix);

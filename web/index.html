@@ -6,7 +6,6 @@
   attribute vec4 a_position;
   attribute vec4 vColor;
   varying vec4 color;
-  uniform float u_fudgeFactor;
 
   // all shaders have a main function
   void main() {
@@ -14,13 +13,8 @@
     // gl_Position is a special variable a vertex shader
     // is responsible for setting
     // Multiply the position by the matrix.
-    vec4 position = u_matrix * a_position;
 
-    // Adjust the z to divide by
-    float zToDivideBy = 1.0 + position.z * u_fudgeFactor;
-
-    // Divide x and y by z.
-    gl_Position = vec4(position.xyz, zToDivideBy);
+    gl_Position = u_matrix * a_position;
     color = vColor;
   }
 
