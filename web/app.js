@@ -132,12 +132,12 @@ function main() {
   );
 
   // Compute the matrix
-  var matrix = m3.projection(1, 1);
-  matrix = m3.translate(matrix, 0.3, 0.2);
-  // matrix = m3.rotate(matrix, 50);
-  // matrix = m3.scale(matrix, 1, 2);
+  var matrix = m4.perspective(1, 1, -1, 1);
+  matrix = m4.translate(matrix, 0.2, 0.3, -8);
+  matrix = m4.xRotate(matrix, 20);
+  matrix = m4.scale(matrix, 2, 2, 2);
   // Set the matrix.
-  gl.uniformMatrix3fv(matrixLocation, false, matrix);
+  gl.uniformMatrix4fv(matrixLocation, false, matrix);
 
   // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
   var size = 2;          // 2 components per iteration

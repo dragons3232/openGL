@@ -2,17 +2,25 @@
 <script id="vertex-shader-2d" type="notjs">
 
   // an attribute will receive data from a buffer
-  uniform mat3 u_matrix;
-  attribute vec2 a_position;
+  uniform mat4 u_matrix;
+  attribute vec4 a_position;
   attribute vec4 vColor;
   varying vec4 color;
+  uniform float u_fudgeFactor;
 
   // all shaders have a main function
   void main() {
 
     // gl_Position is a special variable a vertex shader
     // is responsible for setting
-    gl_Position = vec4((u_matrix * vec3(a_position, 1)).xy, 0, 1);
+    // Multiply the position by the matrix.
+    vec4 position = u_matrix * a_position;
+
+    // Adjust the z to divide by
+    float zToDivideBy = 1.0 + position.z * u_fudgeFactor;
+
+    // Divide x and y by z.
+    gl_Position = vec4(position.xyz, zToDivideBy);
     color = vColor;
   }
 
@@ -39,5 +47,5 @@ and https://webglfundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
 for webgl-utils, m3, m4, and webgl-lessons-ui.
 -->
 <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
-<script src="https://webglfundamentals.org/webgl/resources/m3.js"></script>
+<script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
 <script src="app.js"></script>
