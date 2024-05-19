@@ -47,6 +47,8 @@ function main() {
   // Link the two shaders into a program
   var program = createProgram(gl, vertexShader, fragmentShader);
 
+  // lookup uniforms
+  var matrixLocation = gl.getUniformLocation(program, "u_matrix");
   // look up where the vertex data needs to go.
   var positionAttributeLocation = gl.getAttribLocation(program, "a_position");
   var colorAttrLocation = gl.getAttribLocation(program, "vColor");
@@ -128,6 +130,14 @@ function main() {
     new Uint16Array(indices),
     gl.STATIC_DRAW
   );
+
+  // Compute the matrix
+  var matrix = m3.projection(1, 1);
+  matrix = m3.translate(matrix, 0.3, 0.2);
+  // matrix = m3.rotate(matrix, 50);
+  // matrix = m3.scale(matrix, 1, 2);
+  // Set the matrix.
+  gl.uniformMatrix3fv(matrixLocation, false, matrix);
 
   // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
   var size = 2;          // 2 components per iteration
